@@ -1,0 +1,16 @@
+body{
+    background: #F8F9FC
+}
+.paper{
+     border: 2px solid #334C69;
+     border-radius: 0;
+     background: #FFFFFF;   
+}
+.control{  
+    position:fixed;
+    bottom:35px;
+    right: 35px;
+}
+p,h6{
+        font-family: serif;
+}

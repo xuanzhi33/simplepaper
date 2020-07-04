@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<!--Made with ❤ by XUANZHI-->
+<!--该页面已接入百度统计-->
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>简单字条</title>
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="paper.css" rel="stylesheet">
+  <link href="logo.jpg" rel="icon">
+  <script>
+    var _hmt = _hmt || [];
+    (function () {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?76d748872de14bad7ef88266420d87e4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+</head>
+
+<body>
+  <br>
+  <div class="container">
+    <h6 id="msg">简单字条</h6>
+    <div id="main" style="display: none" class="card paper"> <br>
+      <div class="container">
+        <h3 class="text-center" id="h">您好，朋友</h3><br>
+        <div id="p">
+          <p>
+          <span id="welcome_msg"></span><br>
+          欢迎来到简单字条<br>
+          故事、诗歌等都会在这出现<br>
+          点击右下角的切换按钮切换字条<br>
+          纸条内容均由程序从互联网采集<br>
+          您可随时刷新页面来回到本字条<br>
+          您现在可点击右下角的切换按钮<br>
+          开始您的阅读之旅吧
+          </p>
+          鸣谢：<br>
+          界面、设计：<a href="http://www.xuanzhi33.top">@xuanzhi33</a><br>
+          服务器、数据：<a href="https://simplebytes.cn">@简单字节</a><br><br>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="control"> 
+    <button class="btn" style="display: none" id="get"><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gga6ek03ygj30dw0dwaa3.jpg" alt="切换" width="45px"></button>
+    </div>
+  </div>
+  <br>
+  <br>
+  <script>
+    function getCookie(cname) {
+      var name = cname + "=";
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i].trim();
+        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+      }
+      return "";
+    }
+    function delCookie(name) {
+      document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
+
+    if (getCookie("x_user")) {
+      document.getElementById("welcome_msg").innerHTML = getCookie("x_user") + "，欢迎您！&nbsp;&nbsp;<a href='http://xuanzhi33.top/logout.html'>退出登录</a>"
+    } else {
+      document.getElementById("welcome_msg").innerHTML = "游客，您好！&nbsp;&nbsp;您可以<a href='http://xuanzhi33.top/login/signup.html'>注册</a>或<a href='http://xuanzhi33.top/login/'>登录</a>"
+    }
+    function GetUrlByParamName(name) {
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+      var URL = decodeURI(window.location.search);
+      var r = URL.substr(1).match(reg);
+      if (r != null) {
+        //decodeURI() 函数可对 encodeURI() 函数编码过的 URI 进行解码  
+        return decodeURI(r[2]);
+      };
+      return null;
+    }
+
+
+  </script>
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.min.js"></script>
+
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+
+  <script>
+    function suiji(){
+       var i=Math.floor(Math.random()*11)+1;
+       switch (i) {
+         case 1: return("story"); break;
+         case 2: title="简说历史";return("pitlishi");  break;
+         case 3: return("story");  break;
+         case 4: return("yuanqu"); break;
+         case 5: title="精美句子";return("sentence");  break;
+         case 6: return("story"); break;
+         case 7: return("songci"); break;
+         case 8: return("poetry"); break;
+         case 9: return("poetries"); break;
+         case 10: return("story"); break;
+         case 11: title="毒鸡汤";return("dujitang");  break;
+       }
+    }
+    $(document).ready(function(){
+      $('#main').fadeIn("slow");
+      $("#get").fadeIn("slow");
+  $("#get").click(function(){
+    $("#msg").html("简单字条 切换中...");
+    title="无标题";
+    $.get("https://api.tianapi.com/txapi/"+suiji()+"/index?k"+"e"+"y=a"+"422"+"a"+"626d"+"a"+"1eded437"+"a"+"ecb"+"a"+"951f4e2b3",
+    function(data,status){
+    $("#get").fadeOut("slow");
+    $("#main").fadeOut("slow",function(){
+    $('#p').html("<p>"+data.newslist[0].content.replace(/\n/g,"</p><p>")+"</p>"); 
+    if (data.newslist[0].title) title=data.newslist[0].title;
+    $('#h').html(title);
+    $("#get").fadeIn("slow");
+    $("#main").fadeIn("slow",function(){
+      $("#msg").html("简单字条");
+    });
+    });
+    });
+  });
+});
+  </script>
+</body>
+
+</html>
