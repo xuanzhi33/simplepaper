@@ -1,5 +1,8 @@
 # SimplePaper - 简单字条
-简单字条，https://paper.simplebytes.cn/
+
+主网站：https://paper.simplebytes.cn/
+
+备用站：http://xuanzhi33.top/paper/
 
 纯html+js，故事、百科、诗歌的大杂烩
 
