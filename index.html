@@ -7,7 +7,10 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="unsafe-url">
+  <link rel="manifest" href="manifest.json">
   <title>简单字条</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.0/dist/css/mdui.min.css"/>
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="paper.css" rel="stylesheet">
@@ -22,11 +25,10 @@
     })();
   </script>
 </head>
-
 <body>
-  <br>
+  <br class="brBefore">
   <div class="container">
-    <h6 id="msg">简单字条</h6>
+    <h6 id="msg" class="brBefore">简单字条</h6>
     <div id="main" style="display: none" class="card paper"> <br>
       <div class="container">
         <h3 class="text-center" id="h">您好，朋友</h3><br>
@@ -48,9 +50,7 @@
       </div>
     </div>
     <br>
-    <div class="control"> 
-    <button class="btn" style="display: none" id="get"><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gga6ek03ygj30dw0dwaa3.jpg" alt="切换" width="45px"></button>
-    </div>
+    <button class="getBtn mdui-fab mdui-ripple mdui-fab-fixed mdui-color-blue-grey-800 mdui-fab-hide" style="outline:none;" id="get"><i class="mdui-icon material-icons">&#xe5d5;</i></button>
   </div>
   <br>
   <br>
@@ -65,11 +65,19 @@
       return "";
     }
     function delCookie(name) {
-      document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; domain=simplebytes.cn";
+    }
+
+    if (GetUrlByParamName("token")){
+      document.cookie="x_user="+GetUrlByParamName("name")+"; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/; domain=xuanzhi33.github.io";
+      document.cookie="x_key="+GetUrlByParamName("token")+"; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/; domain=xuanzhi33.github.io";
+      if(location.href.indexOf("?") != -1){
+         location.href = location.href.split("?")[0];
+　　　 }
     }
 
     if (getCookie("x_user")) {
-      document.getElementById("welcome_msg").innerHTML = getCookie("x_user") + "，欢迎您！&nbsp;&nbsp;<a href='http://xuanzhi33.top/logout.html'>退出登录</a>"
+      document.getElementById("welcome_msg").innerHTML = getCookie("x_user") + "，欢迎您！&nbsp;&nbsp;<a href='http://xuanzhi33.top/sign/?from=https://paper.simplebytes.cn'>每日签到</a>&nbsp;&nbsp;<a href='https://simplebytes.cn/?logout=yes'>退出登录</a>"
     } else {
       document.getElementById("welcome_msg").innerHTML = "游客，您好！&nbsp;&nbsp;您可以<a href='http://xuanzhi33.top/login/signup.html'>注册</a>或<a href='http://xuanzhi33.top/login/'>登录</a>"
     }
@@ -83,16 +91,9 @@
       };
       return null;
     }
-
-
   </script>
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.min.js"></script>
-
-  <!-- Include all compiled plugins (below), or include individual files as needed -->
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
-
   <script>
     function suiji(){
        var i=Math.floor(Math.random()*11)+1;
@@ -112,26 +113,43 @@
     }
     $(document).ready(function(){
       $('#main').fadeIn("slow");
-      $("#get").fadeIn("slow");
+      $("#get").removeClass('mdui-fab-hide');
   $("#get").click(function(){
     $("#msg").html("简单字条 切换中...");
     title="无标题";
     $.get("https://api.tianapi.com/txapi/"+suiji()+"/index?k"+"e"+"y=a"+"422"+"a"+"626d"+"a"+"1eded437"+"a"+"ecb"+"a"+"951f4e2b3",
     function(data,status){
-    $("#get").fadeOut("slow");
+    $("#get").addClass('mdui-fab-hide');
     $("#main").fadeOut("slow",function(){
     $('#p').html("<p>"+data.newslist[0].content.replace(/\n/g,"</p><p>")+"</p>"); 
     if (data.newslist[0].title) title=data.newslist[0].title;
     $('#h').html(title);
-    $("#get").fadeIn("slow");
+    $("#get").removeClass('mdui-fab-hide');
     $("#main").fadeIn("slow",function(){
       $("#msg").html("简单字条");
     });
     });
     });
   });
+	function check() { 
+  var userAgentInfo=navigator.userAgent; 
+  var flag=true; 
+  if(userAgentInfo=="simpletoolsAPP") flag=false; 
+   return flag; 
+  }
+  if (!navigator.onLine){
+    if (check()) $("#h").html("请连接互联网<br>若要离线使用，请下载简单工具APP");
+  };
+    function updateOnlineStatus(event) {
+        if (!navigator.onLine){
+          if (check()) $("#h").html("请连接互联网<br>若要离线使用，请下载简单工具APP");
+        }else{
+          $("#h").html("您好，朋友");
+        };
+    }
+    window.addEventListener('online',  updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
 });
-  </script>
+</script>
 </body>
-
 </html>
